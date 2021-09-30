@@ -7,6 +7,33 @@ Extensiphy is a pipeline that assembles homologous loci by aligning reads to a r
 
 Extensiphy takes an alignment and sets of sequencing reads from query taxa (a). Reads are aligned to a reference sequence and a consensus sequence is called (b). The new sequence is added to the alignment and the updated alignment is used to estimate a phylogeny (c).
 
+### Tutorial
+
+We *HIGHLY* recommend you run through the tutorial before using Extensiphy on your own dataset. The tutorial will walk through how to install program dependencies for use with Extensiphy and how to run Extensiphy using different data types and options. Try the tutorial in the tutorial folder. You can copy code snippets into your terminal window.
+
+### Depenencies and Installation
+
+The easiest way to install the depenencies for Extensiphy is to use Conda. You can use the following commands to install all of the dependencies for Extensiphy.
+
+Add appropriate channels to your conda install:
+
+```bash
+conda config --prepend channels conda-forge
+conda config --prepend channels bioconda
+```
+
+Run this command to create a new environment (extensiphy_env) and add the necessary dependencies:
+
+```bash
+conda create -n extensiphy_env samtools bwa-mem2 seqtk bcftools fastx-toolkit dendropy raxml
+```
+
+Activate your installation
+
+```bash
+conda activate extensiphy_env
+```
+
 
 ### Setup and Use
 
@@ -99,9 +126,16 @@ gon_phyling.sh is a simple pipeline to de novo assemble reads before using parsn
 
 For a more indepth walkthrough of how to install dependencies for use with Extensiphy and how to run Extensiphy using different data types and options, try the tutorial in the tutorial folder. You can copy code snippets into your terminal window.
 
-### Dependencies
+## Information
+
+### Advanced User Notes
 
 **Using Extensiphy is limited to Linux at the moment.** Using Ubuntu will ensure the smoothest performance. If you want to use another distro, you'll have to make sure you install analogous one-liners and all that. You have been warned.
+
+
+### Requirements
+
+You can forgo installing dependencies with Conda and instead install everything by hand if you feel comfortable with computer pathing. 
 
 Dependencies (Separate programs you'll need to install):
 
@@ -118,7 +152,7 @@ Additionally, Extensiphy comes with an additional pipeline for generating a phyl
 
 1. [PARSNP](https://harvest.readthedocs.io/en/latest/content/parsnp.html)
 2. [Spades](https://github.com/ablab/spades)
-3. [BBmap](https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/bbmap-guide/)
+3. [BBmap](https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/bbmap-guide/) (BBDUK.sh)
 4. [RAxMLHPC](https://github.com/stamatak/standard-RAxML)
 
 
@@ -136,27 +170,3 @@ pip install dendropy
 
 Installs with apt-get for Gon\_phyling are not currently available. You will have to install these programs manually or with conda.
 
-
-### Conda dependency install
-Use conda for fastest dependency install.
-
-Add appropriate channels to your conda install:
-
-```bash
-conda config --prepend channels conda-forge
-conda config --prepend channels bioconda
-```
-
-Run this command to add the necessary dependencies to your conda environment:
-
-```bash
-conda create -n extensiphy samtools bwa-mem2 seqtk bcftools fastx-toolkit dendropy raxml
-```
-
-Activate your installation
-
-```bash
-conda activate rapup
-```
-
-Conda install recipe on the way.
