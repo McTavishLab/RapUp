@@ -37,6 +37,19 @@ conda activate extensiphy_env
 
 ### Setup and Use
 
+The simplest and most hassle free way to run EP is using docker.
+We also share conda (link) and direct install recipes (link)
+
+**link to docker approach**
+
+
+**link conda approach**
+
+
+**link to manual approach**
+
+
+
 Extensiphy now takes inputs in the commandline without requiring a config file.
 Extensiphy allows for control over both how many Extensiphy runs happen
 in parallel and how many threads are allocated to each Extensiphy run
@@ -53,6 +66,8 @@ If you only plan on using Extensiphy to add data to an existing alignment and tr
 ```bash
 ./multi_map.sh -a ./testdata/combo.fas -t ./testdata/combo.tre -d ./testdata
 ```
+
+** you will know this worked if ... **
 
 If you plan to generate a starting alignment and tree that you wish to add sequences to, test gon_phyling with this command:
 
