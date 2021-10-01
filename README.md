@@ -1,5 +1,5 @@
 # Extensiphy
-### Overview
+## Overview
 
 Extensiphy is a pipeline that assembles homologous loci by aligning reads to a reference from a multiple sequence alignment, calls consensus, adds to the existing alignment. Homologous loci may be kept concatenated or split back into individual alignments prior to phylogenetic estimation.
 
@@ -7,50 +7,21 @@ Extensiphy is a pipeline that assembles homologous loci by aligning reads to a r
 
 Extensiphy takes an alignment and sets of sequencing reads from query taxa (a). Reads are aligned to a reference sequence and a consensus sequence is called (b). The new sequence is added to the alignment and the updated alignment is used to estimate a phylogeny (c).
 
-### Tutorial
+## Setup and Use
 
-We *HIGHLY* recommend you run through the tutorial before using Extensiphy on your own dataset. The tutorial will walk through how to install program dependencies for use with Extensiphy and how to run Extensiphy using different data types and options. Try the tutorial in the tutorial folder. You can copy code snippets into your terminal window.
+### Docker
+The simplest and most hassle free way to run Extensiphy is using Docker. This link will take you to the Docker installation guide.
 
-### Depenencies and Installation
+### Anaconda
+You can also install the dependencies of Extensiphy using Anaconda. This link will take you to the Anaconda installation guide.
 
-The easiest way to install the depenencies for Extensiphy is to use Conda. You can use the following commands to install all of the dependencies for Extensiphy.
+### Advanced
+*For advanced users of Linux* If you're comfortable installing programs by hand, this section is for you.
 
-Add appropriate channels to your conda install:
+## Tutorial
 
-```bash
-conda config --prepend channels conda-forge
-conda config --prepend channels bioconda
-```
+We *HIGHLY* recommend you run through the tutorial before using Extensiphy on your own dataset. The tutorial will walk through how to install program dependencies for use with Extensiphy and how to run Extensiphy using different data types and options. You can find the tutorial file in the tutorial folder (link). You can copy code snippets into your terminal window.
 
-Run this command to create a new environment (extensiphy_env) and add the necessary dependencies:
-
-```bash
-conda create -n extensiphy_env samtools bwa-mem2 seqtk bcftools fastx-toolkit dendropy raxml
-```
-
-Activate your installation
-
-```bash
-conda activate extensiphy_env
-```
-
-
-### Setup and Use
-
-The simplest and most hassle free way to run EP is using docker.
-We also share conda (link) and direct install recipes (link)
-
-**link to docker approach**
-
-
-**link conda approach**
-
-
-**link to manual approach**
-
-
-
-Extensiphy now takes inputs in the commandline without requiring a config file.
 Extensiphy allows for control over both how many Extensiphy runs happen
 in parallel and how many threads are allocated to each Extensiphy run
 Make sure you dont ask your computer to work too hard by adding more runs and threads than your computer can handle
@@ -58,7 +29,7 @@ find out how many cores you have available and calculate (cores * extensiphy_run
 if you have 8 cores available, consider starting 2 runs with 3 threads available to each,
 then adjust to your optimum setting.
 
-### First Run
+## Impatient Person's First Run
 Once you've cloned this repo and installed all dependencies to your PATH, begin here. Dependencies are outlined at the bottom of this readme.
 
 If you only plan on using Extensiphy to add data to an existing alignment and tree, use the following command:
@@ -79,7 +50,14 @@ If you plan to generate a starting alignment and tree that you wish to add seque
 
 Extensiphy requires that you limit the loci you include for updating to sequences with lengths of 1000bp or above. This is to protect the read mapping and basecall accuracy. This is checked when using individual locus alignments as input but when using a concatenated alignment, the user must make this assessment themselves.
 
-### Extensiphy Controls and Flags For Use:
+## Extensiphy Controls and Flags For Use:
+
+Extensiphy allows for control over both how many Extensiphy runs happen
+in parallel and how many threads are allocated to each Extensiphy run
+Make sure you dont ask your computer to work too hard by adding more runs and threads than your computer can handle
+find out how many cores you have available and calculate (cores * extensiphy_runs) you wish to run as the same time
+if you have 8 cores available, consider starting 2 runs with 3 threads available to each,
+then adjust to your optimum setting.
 
 #### Required flags
 - (-a) alignment in fasta format,
@@ -101,7 +79,7 @@ Extensiphy requires that you limit the loci you include for updating to sequence
  if using single locus MSA files as input,
 - (-f) csv file name to keep track of individual loci when concatenated (DEFAULT: loci_positions.csv),
 
-### Output Files!
+## Output Files!
 - concatenated file: found in your output folder [OUTDIR]/combine_and_infer/extended.aln
 - Phylogeny in newick file format: found in your output folder [OUTDIR]/combine_and_infer/RAxML_bestTree.consensusFULL
 - taxon specific intermediate files: found in your output folder [OUTDIR]/[TAXON_NAME]. .sam, .bam and .vcf files can be found in here for any additional analyses.
@@ -128,7 +106,7 @@ You need a tree and alignment with any number of taxa in order to update these w
 gon_phyling.sh is a simple pipeline to de novo assemble reads before using parsnp for loci selection and finally phylogenetic inference.
 
 1. Move some fraction of your reads to a new directory for assembly and starting tree inference.
-2. run: 
+2. run:
 ```bash
 ./gon_phyling.sh -d [PATH/TO/NEW/READ/DIRECTORY] -1 [READ SUFFIX 1] -2 [READ SUFFIX 2]
 ```
@@ -137,20 +115,71 @@ gon_phyling.sh is a simple pipeline to de novo assemble reads before using parsn
  multi_map.sh -a [PATH/TO/ALIGNMENT/FILE] -d [PATH/TO/READ/DIRECTORY] -t [PATH/TO/TREE/FILE] -1 [READ SUFFIX 1] -2 [READ SUFFIX 2].
 ```
 
-### Tutorial
+## Installation Methods
 
-For a more indepth walkthrough of how to install dependencies for use with Extensiphy and how to run Extensiphy using different data types and options, try the tutorial in the tutorial folder. You can copy code snippets into your terminal window.
+### Docker Installation
+Docker is currently the easiest, all inclusive way to install Extensiphy and all its dependency programs.
+You can find out more about installing Docker [here](https://docs.docker.com/engine/install/).
 
-## Information
+Once Docker has been installed, you'll need to move your data into a folder that we'll connect to the Docker container.
+This will make it accessible to the Docker container and to Extensiphy.
 
-### Advanced User Notes
+```bash
+mv [/path/to/directory/of/reads] [/path/to/data/folder]
+mv [/path/to/alignment_file] [/path/to/data/folder]
+```
+
+Once data files are in the appropriate place, lets build the Docker image we'll use as a base for future Extensiphy containers.
+```bash
+docker build --tag [image name] .
+```
+
+Now lets build and runs an interactive Docker container based on the image we just made.
+We need to add the path to the folder we stored our data in earlier.
+This will allow us to access all of our data files within the Docker container.
+
+```bash
+docker run --name [container name] -it -v [/path/to/data/folder]:/usr/src/app/data_connection [image name] bash
+```
+
+You can now run the First Run command using this command.
+```bash
+PLACEHOLDER
+```
+
+### Anaconda Installation
+You can install the dependencies of Extensiphy using the Anaconda package manager. Install instructions for Anaconda can be found here (link).
+Once Anaconda has been installed, use this command to create an environment with all of the Extensiphy dependencies added to it.
+
+Add appropriate channels to your conda install:
+
+```bash
+conda config --prepend channels conda-forge
+conda config --prepend channels bioconda
+```
+
+Run this command to create a new environment (extensiphy_env) and add the necessary dependencies:
+
+```bash
+conda create -n extensiphy_env samtools bwa-mem2 seqtk bcftools fastx-toolkit dendropy raxml
+```
+
+Activate your installation
+
+```bash
+conda activate extensiphy_env
+```
+
+Once all installation processes are complete and you've activated your environment, you can run the commands found in First Run (link)
+
+### Advanced Installation Methods
 
 **Using Extensiphy is limited to Linux at the moment.** Using Ubuntu will ensure the smoothest performance. If you want to use another distro, you'll have to make sure you install analogous one-liners and all that. You have been warned.
 
 
-### Requirements
+#### Requirements
 
-You can forgo installing dependencies with Conda and instead install everything by hand if you feel comfortable with computer pathing. 
+You can forgo installing dependencies with Conda and instead install everything by hand if you feel comfortable with computer pathing.
 
 Dependencies (Separate programs you'll need to install):
 
@@ -184,4 +213,3 @@ pip install dendropy
 ```
 
 Installs with apt-get for Gon\_phyling are not currently available. You will have to install these programs manually or with conda.
-
